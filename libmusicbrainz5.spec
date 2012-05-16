@@ -1,13 +1,13 @@
 %define package_name    libmusicbrainz
-%define	version	4.0.2
+%define	version	5.0.0
 %define release	1
 
-%define api 4
+%define api 5
 %define major 3
 %define libname %mklibname musicbrainz %api %{major}
 %define develname %mklibname -d musicbrainz %api
 
-Name:		libmusicbrainz4
+Name:		libmusicbrainz5
 Version:	%{version}
 Release:	%{release}
 Summary:	A software library for accesing MusicBrainz servers

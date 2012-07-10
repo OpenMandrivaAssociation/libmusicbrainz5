@@ -1,22 +1,20 @@
 %define package_name    libmusicbrainz
-%define	version	5.0.1
-%define release	1
 
 %define api 5
 %define major 0
-%define libname %mklibname musicbrainz %api %{major}
-%define develname %mklibname -d musicbrainz %api
+%define libname %mklibname musicbrainz %{api} %{major}
+%define develname %mklibname -d musicbrainz %{api}
 
 Name:		libmusicbrainz5
-Version:	%{version}
-Release:	%{release}
+Version:	5.0.1
+Release:	2
 Summary:	A software library for accesing MusicBrainz servers
 Source0:	https://github.com/downloads/metabrainz/libmusicbrainz/%{package_name}-%{version}.tar.gz
 Patch0:		cmake_include_dir.patch
 URL:		http://musicbrainz.org/doc/libmusicbrainz
 Group:		Sound
 License:	LGPLv2+
-BuildRequires:  cmake
+BuildRequires:	cmake
 BuildRequires:	pkgconfig(neon)
 BuildRequires:	pkgconfig(libdiscid)
 BuildRequires:	pkgconfig(cppunit)
@@ -35,13 +33,13 @@ The MusicBrainz client library allows applications to make metadata
 lookup to a MusicBrainz server, generate signatures from WAV data and
 create CD Index Disk ids from audio CD roms.
 
-%package -n %develname
+%package -n %{develname}
 Summary:	Headers for developing programs that will use libmusicbrainz
 Group:		Development/Other
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
-%description -n	%develname
+%description -n %{develname}
 This package contains the headers that programmers will need to develop
 applications which will use libmusicbrainz.
 
@@ -50,22 +48,21 @@ applications which will use libmusicbrainz.
 %apply_patches
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=%_prefix \
-%if "%_lib" != "lib"
+cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+%if "%{_lib}" != "lib"
     -DLIB_SUFFIX=64 \
 %endif
 
 %make
 
 %install
-
 %makeinstall_std
 
 %files -n %{libname}
 %doc AUTHORS.txt COPYING.txt NEWS.txt
 %{_libdir}/libmusicbrainz%{api}.so.%{major}*
 
-%files -n %develname
+%files -n %{develname}
 %{_includedir}/musicbrainz%{api}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libmusicbrainz%{api}.pc

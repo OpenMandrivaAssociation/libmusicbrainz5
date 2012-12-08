@@ -1,13 +1,13 @@
-%define package_name    libmusicbrainz
+%define package_name libmusicbrainz
 
 %define api 5
 %define major 0
-%define libname %mklibname musicbrainz %{api} %{major}
-%define develname %mklibname -d musicbrainz %{api}
+%define libname %mklibname musicbrainz %api %{major}
+%define develname %mklibname -d musicbrainz %api
 
 Name:		libmusicbrainz5
 Version:	5.0.1
-Release:	2
+Release:	1
 Summary:	A software library for accesing MusicBrainz servers
 Source0:	https://github.com/downloads/metabrainz/libmusicbrainz/%{package_name}-%{version}.tar.gz
 Patch0:		cmake_include_dir.patch
@@ -48,8 +48,8 @@ applications which will use libmusicbrainz.
 %apply_patches
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-%if "%{_lib}" != "lib"
+cmake . -DCMAKE_INSTALL_PREFIX=%_prefix \
+%if "%_lib" != "lib"
     -DLIB_SUFFIX=64 \
 %endif
 
@@ -66,3 +66,52 @@ cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} \
 %{_includedir}/musicbrainz%{api}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libmusicbrainz%{api}.pc
+
+
+%changelog
+* Wed May 16 2012 Götz Waschk <waschk@mandriva.org> 5.0.1-1
++ Revision: 799259
+- new version
+- drop patch 1
+
+* Wed May 16 2012 Götz Waschk <waschk@mandriva.org> 5.0.0-1
++ Revision: 799142
+- new major
+- new API
+- new version
+- fork for new version
+- fix a build error
+- new version
+- fix source URL
+- new major
+- update build deps
+- new version
+- fix build
+- new version with a new API
+- new version
+- drop patch
+- fix for gcc 4.4
+- new version
+- drop patch
+- fix build with gcc 4.3
+- fix cmake call to have the right libdir on x86_64
+- import libmusicbrainz3
+
+  + Alexander Khrukin <akhrukin@mandriva.org>
+    - version update 4.0.1
+    - pkgconfig(libname) instead of libname-devel
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - mass rebuild
+    - rebuilt for 2010.1
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild early 2009.0 package (before pixel changes)
+    - kill re-definition of %%buildroot on Pixel's request
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+

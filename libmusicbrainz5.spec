@@ -7,7 +7,7 @@
 
 Name:		libmusicbrainz5
 Version:	5.0.1
-Release:	1
+Release:	3
 Summary:	A software library for accesing MusicBrainz servers
 Source0:	https://github.com/downloads/metabrainz/libmusicbrainz/%{package_name}-%{version}.tar.gz
 Patch0:		cmake_include_dir.patch
@@ -48,7 +48,7 @@ applications which will use libmusicbrainz.
 %apply_patches
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=%_prefix \
+cmake . -DCMAKE_INSTALL_PREFIX=%_prefix -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 %if "%_lib" != "lib"
     -DLIB_SUFFIX=64 \
 %endif

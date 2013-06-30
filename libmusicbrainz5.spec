@@ -47,13 +47,15 @@ applications which will use libmusicbrainz.
 %apply_patches
 
 %build
-%cmake \
-	-DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+%if "%_lib" != "lib"
+	-DLIB_SUFFIX=64 \
+%endif
 
 %make
 
 %install
-%makeinstall_std -C build
+%makeinstall_std
 
 %files -n %{libname}
 %{_libdir}/libmusicbrainz%{api}.so.%{major}*

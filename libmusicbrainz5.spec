@@ -1,19 +1,19 @@
 %define oname	libmusicbrainz
 %define api	5
-%define major	0
+%define major	1
 %define libname	%mklibname musicbrainz %{api} %{major}
 %define devname	%mklibname -d musicbrainz %{api}
 
 Summary:	A software library for accesing MusicBrainz servers
 Name:		libmusicbrainz5
-Version:	5.0.1
-Release:	17
+Version:	5.1.0
+Release:	1
 Group:		Sound
 License:	LGPLv2+
 Url:		http://musicbrainz.org/doc/libmusicbrainz
-Source0:	https://github.com/downloads/metabrainz/libmusicbrainz/%{oname}-%{version}.tar.gz
-Patch0:		cmake_include_dir.patch
+Source0:	https://github.com/metabrainz/libmusicbrainz/archive/release-%{version}.tar.gz
 BuildRequires:	cmake
+BuildRequires:	ninja
 BuildRequires:	pkgconfig(neon)
 BuildRequires:	pkgconfig(libdiscid)
 BuildRequires:	pkgconfig(cppunit)
@@ -43,19 +43,21 @@ This package contains the headers that programmers will need to develop
 applications which will use libmusicbrainz.
 
 %prep
-%setup -qn %{oname}-%{version}
+%setup -qn %{oname}-release-%{version}
 %apply_patches
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 %if "%_lib" != "lib"
 	-DLIB_SUFFIX=64 \
 %endif
+	-G Ninja \
+	.
 
-%make
+%ninja
 
 %install
-%makeinstall_std
+%ninja_install
 
 %files -n %{libname}
 %{_libdir}/libmusicbrainz%{api}.so.%{major}*

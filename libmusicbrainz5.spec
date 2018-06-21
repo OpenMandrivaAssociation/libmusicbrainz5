@@ -16,6 +16,7 @@ BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	pkgconfig(neon)
 BuildRequires:	pkgconfig(libdiscid)
+BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(cppunit)
 
 %description

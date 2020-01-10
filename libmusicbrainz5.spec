@@ -45,7 +45,7 @@ applications which will use libmusicbrainz.
 
 %prep
 %setup -qn %{oname}-release-%{version}
-%apply_patches
+%autopatch -p1
 
 %build
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RelWithDebInfo \

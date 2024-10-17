@@ -10,7 +10,7 @@ Version:	5.1.0
 Release:	4
 Group:		Sound
 License:	LGPLv2+
-Url:		http://musicbrainz.org/doc/libmusicbrainz
+Url:		https://musicbrainz.org/doc/libmusicbrainz
 Source0:	https://github.com/metabrainz/libmusicbrainz/archive/release-%{version}.tar.gz
 BuildRequires:	cmake
 BuildRequires:	ninja

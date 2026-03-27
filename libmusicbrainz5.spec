@@ -7,7 +7,7 @@
 Summary:	A software library for accesing MusicBrainz servers
 Name:		libmusicbrainz5
 Version:	5.1.0
-Release:	4
+Release:	5
 Group:		Sound
 License:	LGPLv2+
 Url:		https://musicbrainz.org/doc/libmusicbrainz

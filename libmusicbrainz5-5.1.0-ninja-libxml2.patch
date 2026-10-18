@@ -1,0 +1,48 @@
+Ninja does not expand a DEPENDS glob, so src/*.inc was a missing file.
+libxml2 2.15's xmlGetLastError() returns a const xmlError.
+
+--- a/CMakeLists.txt	2014-11-13 14:12:24.000000000 +0100
++++ b/CMakeLists.txt	2026-10-18 04:21:54.638800616 +0200
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.5)
+ 
+ PROJECT(libmusicbrainz5)
+ SET(PROJECT_VERSION 5.1.0)
+--- a/src/CMakeLists.txt	2014-11-13 14:12:24.000000000 +0100
++++ b/src/CMakeLists.txt	2026-10-18 04:21:54.638862517 +0200
+@@ -32,11 +32,13 @@
+   EXPORT(TARGETS make-c-interface FILE ${CMAKE_BINARY_DIR}/ImportExecutables.cmake )
+ ENDIF(NOT CMAKE_CROSSCOMPILING)
+ 
++file(GLOB _mb5_inc_files "${CMAKE_CURRENT_SOURCE_DIR}/*.inc")
++
+ ADD_CUSTOM_COMMAND(
+ 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mb5_c.cc ${CMAKE_CURRENT_BINARY_DIR}/mb5_c.h ${CMAKE_CURRENT_BINARY_DIR}/../include/musicbrainz5/mb5_c.h
+ 	COMMAND make-c-interface ${CMAKE_CURRENT_SOURCE_DIR} cinterface.xml ${CMAKE_CURRENT_BINARY_DIR} mb5_c.cc mb5_c.h
+ 	COMMAND ${CMAKE_COMMAND} -E copy_if_different 	${CMAKE_CURRENT_BINARY_DIR}/mb5_c.h ${CMAKE_CURRENT_BINARY_DIR}/../include/musicbrainz5/mb5_c.h
+-	DEPENDS make-c-interface cinterface.xml *.inc
++	DEPENDS make-c-interface cinterface.xml ${_mb5_inc_files}
+ )
+ 
+ ADD_CUSTOM_TARGET(src_gen DEPENDS mb5_c.h)
+--- a/src/xmlParser.cc	2014-11-13 14:12:24.000000000 +0100
++++ b/src/xmlParser.cc	2026-10-18 04:21:54.638931778 +0200
+@@ -56,7 +56,7 @@
+ 
+     doc = xmlParseFile(filename.c_str());
+     if ((doc == NULL) && (results != NULL)) {
+-        xmlErrorPtr error = xmlGetLastError();
++        const xmlError *error = xmlGetLastError();
+         results->message = error->message;
+         results->line = error->line;
+         results->code = error->code;
+@@ -71,7 +71,7 @@
+ 
+     doc = xmlParseMemory(xml.c_str(), xml.length());
+     if ((doc == NULL) && (results != NULL)) {
+-        xmlErrorPtr error = xmlGetLastError();
++        const xmlError *error = xmlGetLastError();
+         results->message = error->message;
+         results->line = error->line;
+         results->code = error->code;

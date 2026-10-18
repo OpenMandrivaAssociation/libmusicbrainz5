@@ -12,6 +12,8 @@ Group:		Sound
 License:	LGPLv2+
 Url:		https://musicbrainz.org/doc/libmusicbrainz
 Source0:	https://github.com/metabrainz/libmusicbrainz/archive/release-%{version}.tar.gz
+# ninja does not expand DEPENDS globs; libxml2 2.15 returns a const xmlError
+Patch0:		libmusicbrainz5-5.1.0-ninja-libxml2.patch
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	pkgconfig(neon)
